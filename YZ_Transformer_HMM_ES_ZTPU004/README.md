@@ -91,10 +91,9 @@ The model is trained using the following procedure:
 ---
 
 ## **Expected Results**
-The model aims to achieve **high accuracy** in predicting fluorescence dose-response curves.
 
 - **Average R² Score:**  
-  Measures how well the predicted fluorescence values match the actual values.
+  Measures how well the predicted function values match the actual values.
 
 - **Prediction Error Distribution:**  
   - Histogram of **prediction errors** to analyze model performance.
