@@ -83,23 +83,7 @@ The final **R² score** is computed for each of the three outputs to assess mode
 
 ---
 
-## **Usage Instructions**
 
-### **1. Install Dependencies**
-Make sure you have installed the following Python packages:
-```bash
-pip install jax flax optax numpy pandas matplotlib scikit-learn
-```
-
-> For GPU support, follow the official JAX installation instructions for CUDA.
-
-### **2. Run the Script**
-Set the correct `FILE_PATH` and `SAVE_PATH` in the script, then execute:
-```bash
-python mlp_joint_predictor_jax.py
-```
-
----
 
 ## **Output Files**
 
