@@ -104,16 +104,5 @@ Results are saved to a CSV file.
 
 ---
 
-
-## **Expected Results**
-The trained models aim to predict:
-
-- **0mM and 1mM binding levels** with high accuracy
-- **Derived fold change** close to experimental measurements
-
-The output CSV enables easy inspection and further visualization of model performance.
-
----
-
 ## **Author**
 **Yuntong Zou**
