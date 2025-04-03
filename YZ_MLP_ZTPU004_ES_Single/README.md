@@ -4,7 +4,7 @@
 ## **Problem Definition**
 We train a **Multi-Layer Perceptron (MLP)** model to predict **dose-response curves** from DNA sequences. The model processes a **one-hot encoded representation** of DNA sequences and predicts **function levels** across six different ZMP concentration levels.
 
-The model is implemented using **PyTorch**, leveraging deep learning techniques for sequence-based regression tasks.
+The model is implemented using **PyTorch**.
 
 ---
 
