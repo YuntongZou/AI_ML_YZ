@@ -2,7 +2,7 @@
 # **HMM-Transformer Model for Predicting Fluorescence Dose Curves from DNA Mutations**
 
 ## **Problem Definition**
-This project integrates **Hidden Markov Models (HMMs)** with **Transformer-based deep learning** to predict ** dose-response curves** from DNA mutations. The model learns to map **nucleotide sequence** to **ZTP function levels** across **six ZMP concentration levels** using a hybrid **HMM + Transformer** architecture.
+This project integrates **Hidden Markov Models (HMMs)** with **Transformer-based deep learning** to predict **dose-response curves** from DNA mutations. The model learns to map **nucleotide sequence** to **ZTP function levels** across **six ZMP concentration levels** using a hybrid **HMM + Transformer** architecture.
 
 The **HMM** captures underlying latent **states** in fluorescence response, while the **Transformer** learns complex sequence dependencies, improving interpretability and predictive power.
 
