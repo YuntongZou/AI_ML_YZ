@@ -80,40 +80,6 @@ The model aims to achieve high accuracy in predicting fluorescence dose curves. 
 - **Dose-Response Curve Comparison:**  
   - Selects **five random test sequences** and plots their **true vs. predicted fluorescence response** across six concentrations.
 
----
-
-## **Usage Instructions**
-### **1. Install Dependencies**
-Ensure you have the required Python libraries installed. You can install them using:
-```bash
-pip install -r requirements.txt
-```
-
-### **2. Run Training Script**
-To train the model and generate predictions:
-```bash
-python mlp_model.py
-```
-
-### **3. Model Saving & Loading**
-The trained models for each fluorescence intensity (`T1` to `T6`) are saved as:
-```bash
-/projects/p32603/1_FL_Curve/mlp_model_T{i}.pt
-```
-
-To load a trained model for inference:
-```python
-model.load_state_dict(torch.load("mlp_model_T1.pt", map_location=device))
-```
-
-### **4. Generate Predictions & Save Results**
-The final test set predictions are saved in:
-```bash
-/projects/p32603/1_FL_Curve/mlp_test_predictions.csv
-```
-
----
-
 ## **Output Files**
 After running the script, the following files will be generated:
 
