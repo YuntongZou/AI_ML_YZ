@@ -1,82 +1,93 @@
-## **Integrated Transformer for Predicting Dose-Response Curves from Mutated DNA Sequences**
+# **Integrated Transformer for Predicting ZTP Function Levels from DNA Sequences**
 
-### **Problem Definition**
+## **Problem Definition**
+This project aims to train a deep learning model using a **Transformer-based architecture** to predict **ZTP function dose-response curves** from DNA sequences. The model processes **tri-nucleotide encoded** sequences and predicts **ZTP function levels across six concentration points (T1-T6)**.
 
-This project implements an **Integrated Transformer model** to predict **dose-response curves** (i.e., fold change values across 6 concentrations) from mutated DNA sequences. Each DNA sequence is processed using **tri-nucleotide encoding**, which captures local sequence context. The Transformer learns to predict all 6 response values simultaneously.
+The core of this model lies in its **deeply nested Transformer encoder blocks**, which allow the model to capture complex patterns and dependencies in DNA sequences beyond what simpler architectures can achieve.
 
 ---
 
 ## **Input and Preprocessing**
-
-The input is a `.csv` file containing mutated DNA sequences and 6 associated fold change measurements at different concentrations.
-
-### **Input Columns**
+The input data is a CSV file with the following columns:
 
 | Column Name         | Description |
-|---------------------|-------------|
-| **Mutated_Sequence** | The DNA sequence after mutation |
-| **T1-T6** (ZMP levels) | function values at 6 concentrations (stored in columns 2 to 7) |
+|--------------------|-------------|
+| **Mutated_Sequence** | Mutated DNA sequence (A, T, G, C) |
+| **T1 - T6**          | ZTP function levels at six concentration levels |
 
 ### **Preprocessing Steps**
+1. **Tri-Nucleotide Encoding**  
+   - Each sequence is broken into overlapping 3-mers.  
+   - Each 3-mer is mapped to a unique integer index.  
+   - The final encoded sequence is an integer vector of length *(L - 2)*, where *L* is the original sequence length.
 
-1. **Tri-nucleotide Encoding:**
-   - Each sequence is converted into a sequence of tri-nucleotide indices using a vocabulary of all 64 possible 3-mers.
-   - Encoded sequences are stored as integer arrays for model input.
+2. **NaN Removal**  
+   - Any rows containing NaNs in T1–T6 are removed.
 
-2. **Train-Test Split:**
-   - The dataset is randomly split into **80% training** and **20% testing**.
-
----
-
-## **Model Overview**
-
-The model is a Transformer-based architecture with the following components:
-
-- **Input Layer:**
-  - Tri-nucleotide integer indices
-  - Embedding layer maps each index to a feature vector
-  - Positional embedding is added to preserve sequence order
-
-- **Transformer Encoder:**
-  - `num_layers = 2` transformer blocks
-  - Each block uses `num_heads = 4` attention heads
-  - Feedforward layer with 256 hidden units
-
-- **Output Layer:**
-  - Fully connected layer mapping encoded features to 6 outputs
-  - Predicts fold change at 6 concentrations
+3. **Train-Test Split**  
+   - Dataset is split into **80% training** and **20% testing**.
 
 ---
 
-## **Training**
+## **Model Architecture**
 
-The model is trained using the following pipeline:
+The model is an **Integrated Transformer** consisting of the following components:
 
-1. **Loss Function:**
-   - **Mean Squared Error (MSE)** between predicted and true values for all 6 outputs
+- **Embedding Layer**  
+  Maps each tri-nucleotide index into a dense vector of dimension `embed_dim=64`.
 
-2. **Optimizer:**
-   - **Adam optimizer** with a learning rate of `1e-3`
+- **Positional Embedding**  
+  A learnable tensor is added to preserve sequence order.
 
-3. **Epochs and Batch Size:**
-   - Trained for **100 epochs**
-   - Batch size: **32**
+- **Transformer Encoder Block (Nested)**  
+  - Consists of **2 stacked encoder layers**, each with:
+    - `nhead=4` multi-head self-attention.
+    - Feedforward dimension = 256.
+    - GELU activation and dropout.
+  - The **nesting of these encoder layers** allows the model to capture deep contextual relationships between nucleotide triplets.
 
-4. **Validation and Saving:**
-   - R² score is calculated for each output
-   - The **average R²** across 6 outputs is tracked
-   - The best model is saved when average R² improves
+- **Mean Pooling Layer**  
+  After the Transformer, a mean pooling operation summarizes the sequence.
 
----
-
-## **Expected Results**
-
-The model is expected to learn the nonlinear mapping between mutated sequences and their dose-response behavior.
-
-- **R² Scores** for each of the 6 outputs are reported
-- **Scatter plot** compares predicted vs. true values
-- **Line plots** show predicted vs. true dose-response curves for 5 sample sequences
+- **Fully Connected Output Layer**  
+  Maps pooled embeddings to a vector of size `6` (corresponding to the six predicted ZTP function levels).
 
 ---
 
-Yuntong Zou
+## **Training Workflow**
+
+1. **Model Instantiation**  
+   - A single model is trained to predict all 6 ZTP function levels jointly.
+
+2. **Loss Function**  
+   - Uses **Mean Squared Error (MSE)** between predictions and true values.
+
+3. **Optimization**  
+   - Optimized using the **Adam optimizer** with learning rate `1e-3`.
+
+4. **Evaluation**  
+   - **Average R² score** across all 6 levels is computed for validation.
+
+5. **Epochs**  
+   - The model is trained for `100 epochs` with `batch size = 32`.
+
+---
+
+## **Output & Visualization**
+
+After training, the following are saved:
+
+| Output File | Description |
+|-------------|-------------|
+| `integrated_transformer_model.pt` | Trained PyTorch model file |
+| `integrated_transformer_predictions.csv` | CSV of predicted vs. true values for test set |
+| `transformer_r2_scatter_test.png` | Scatter plot of predicted vs. true values (T1–T6) |
+| `transformer_curve_comparison_test.png` | Dose-response curve comparison for 5 random sequences |
+
+---
+
+## **Usage Instructions**
+
+### **1. Install Required Packages**
+```bash
+pip install torch pandas numpy matplotlib scikit-learn
