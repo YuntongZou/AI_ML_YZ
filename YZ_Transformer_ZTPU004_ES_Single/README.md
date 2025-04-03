@@ -83,9 +83,3 @@ The model aims to achieve high accuracy in predicting ZTP function dose curves. 
 
 ---
 
-## **Usage Instructions**
-
-### **1. Install Dependencies**
-Ensure you have the required Python libraries installed:
-```bash
-pip install -r requirements.txt
