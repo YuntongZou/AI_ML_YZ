@@ -1,7 +1,7 @@
 # MLP for Predicting Fold Change from DNA Sequences
 
 ## **Problem Definition**
-This project trains two separate **Multi-Layer Perceptron (MLP)** models to predict **0mM** and **1mM** binding levels from DNA sequences. These values are used to compute the **fold change** (1mM / 0mM), representing how much binding changes in response to Mg²⁺ concentration.
+We train two separate **Multi-Layer Perceptron (MLP)** models to predict **0mM** and **1mM** binding levels from DNA sequences. These values are used to compute the **fold change** (1mM / 0mM), representing how much binding changes in response to Mg²⁺ concentration.
 
 The models are implemented using **JAX** and **Flax**, providing efficient auto-differentiation and compilation for fast training and inference.
 
