@@ -2,7 +2,7 @@
 # **MLP Model for Predicting Fluorescence Dose Curves from DNA Sequences**
 
 ## **Problem Definition**
-This project focuses on training a **Multi-Layer Perceptron (MLP)** model to predict **fluorescence dose-response curves** from DNA sequences. The model processes a **one-hot encoded representation** of DNA sequences and predicts **fluorescence intensity values** across six concentration levels.
+We train a **Multi-Layer Perceptron (MLP)** model to predict **dose-response curves** from DNA sequences. The model processes a **one-hot encoded representation** of DNA sequences and predicts **function levels** across six different ZMP concentration levels.
 
 The model is implemented using **PyTorch**, leveraging deep learning techniques for sequence-based regression tasks.
 
