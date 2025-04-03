@@ -14,7 +14,7 @@ The input dataset is a CSV file containing mutation annotations and measured bin
 |---------------------|-------------|
 | **id**              | Mutation ID specifying where deletions (`d25`) occur |
 | **full_sequence**   | Full DNA sequence (A, T, G, C) |
-| **0mM_fracBound**   | Binding level at 0 mM ZMP⁺ |
+| **0mM_fracBound**   | Binding level at 0 mM ZMP |
 | **1mM_fracBound**   | Binding level at 1 mM ZMP |
 | **fold_change**     | Ratio of 1mM / 0mM binding (precomputed) |
 
