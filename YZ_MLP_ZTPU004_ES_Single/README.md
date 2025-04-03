@@ -14,7 +14,7 @@ The input dataset is stored as a CSV file and contains the following columns:
 | Column Name         | Description |
 |--------------------|-------------|
 | **Mutated_Sequence** | DNA sequence (string of A, T, G, C) |
-| **T1 - T6** | Fluorescence intensity values at six different concentrations |
+| **T1 - T6** | Functionlevel of ZTP at six different ZMP concentrations |
 
 ### **Preprocessing Steps**
 1. **One-hot Encoding:**  
