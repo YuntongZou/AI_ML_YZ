@@ -1,93 +1,70 @@
-# **Integrated Transformer for Predicting ZTP Function Levels from DNA Sequences**
+# **Integrated Transformer for Predicting ZTP Function Curves from DNA Sequences**
 
 ## **Problem Definition**
-This project aims to train a deep learning model using a **Transformer-based architecture** to predict **ZTP function dose-response curves** from DNA sequences. The model processes **tri-nucleotide encoded** sequences and predicts **ZTP function levels across six concentration points (T1-T6)**.
+This project aims to train a deep learning model to predict **ZTP function dose-response curves** from mutated DNA sequences. The model receives **tri-nucleotide encoded DNA sequences** and predicts **ZTP function levels at six concentrations (T1–T6)**.
 
-The core of this model lies in its **deeply nested Transformer encoder blocks**, which allow the model to capture complex patterns and dependencies in DNA sequences beyond what simpler architectures can achieve.
+The model leverages a **stacked Transformer Encoder** architecture to effectively learn complex sequence-level representations, capturing both local motifs and global dependencies in DNA.
 
 ---
 
 ## **Input and Preprocessing**
-The input data is a CSV file with the following columns:
+
+### **Input Format**
+The input is a CSV file with the following structure:
 
 | Column Name         | Description |
 |--------------------|-------------|
-| **Mutated_Sequence** | Mutated DNA sequence (A, T, G, C) |
-| **T1 - T6**          | ZTP function levels at six concentration levels |
+| **Mutated_Sequence** | DNA sequence (A, T, G, C) with optional mutations |
+| **T1 - T6**          | ZTP function levels under 6 concentration conditions |
 
 ### **Preprocessing Steps**
-1. **Tri-Nucleotide Encoding**  
-   - Each sequence is broken into overlapping 3-mers.  
-   - Each 3-mer is mapped to a unique integer index.  
-   - The final encoded sequence is an integer vector of length *(L - 2)*, where *L* is the original sequence length.
+1. **Tri-Nucleotide Encoding**
+   - Sequences are encoded into overlapping 3-mers (e.g., `ATG`, `TGC`, `GCA`...).
+   - Each 3-mer is mapped to a unique index, resulting in a sequence of integers.
 
-2. **NaN Removal**  
-   - Any rows containing NaNs in T1–T6 are removed.
+2. **Missing Value Removal**
+   - Rows with any `NaN` in the T1–T6 columns are dropped.
 
-3. **Train-Test Split**  
-   - Dataset is split into **80% training** and **20% testing**.
+3. **Train-Test Split**
+   - The data is split into **80% training** and **20% testing**.
 
 ---
 
 ## **Model Architecture**
 
-The model is an **Integrated Transformer** consisting of the following components:
+The architecture is an **Integrated Transformer Encoder**, composed of the following:
 
-- **Embedding Layer**  
-  Maps each tri-nucleotide index into a dense vector of dimension `embed_dim=64`.
+### 🔷 **Input Layer**
+- **Embedding Layer**:  
+  - Converts each tri-nucleotide index into a 64-dimensional learnable vector.  
+  - `nn.Embedding(num_embeddings=64, embedding_dim=64)`
 
-- **Positional Embedding**  
-  A learnable tensor is added to preserve sequence order.
-
-- **Transformer Encoder Block (Nested)**  
-  - Consists of **2 stacked encoder layers**, each with:
-    - `nhead=4` multi-head self-attention.
-    - Feedforward dimension = 256.
-    - GELU activation and dropout.
-  - The **nesting of these encoder layers** allows the model to capture deep contextual relationships between nucleotide triplets.
-
-- **Mean Pooling Layer**  
-  After the Transformer, a mean pooling operation summarizes the sequence.
-
-- **Fully Connected Output Layer**  
-  Maps pooled embeddings to a vector of size `6` (corresponding to the six predicted ZTP function levels).
+- **Positional Encoding**:  
+  - A learnable tensor of shape `(1, sequence_length, 64)` is added to the embedding to retain positional order.  
+  - `nn.Parameter(torch.randn(1, input_dim, embed_dim))`
 
 ---
 
-## **Training Workflow**
+### 🔷 **Nested Transformer Block**
+This is the core component of the model. It includes **two stacked TransformerEncoder layers**:
 
-1. **Model Instantiation**  
-   - A single model is trained to predict all 6 ZTP function levels jointly.
+Each Transformer layer contains:
+- **Multi-Head Self Attention**:
+  - `nhead=4` attention heads.
+  - Enables the model to attend to different positions in the sequence simultaneously.
 
-2. **Loss Function**  
-   - Uses **Mean Squared Error (MSE)** between predictions and true values.
+- **Feedforward Network**:
+  - A fully connected sub-network with hidden size 256.
+  - Two linear layers and a GELU activation.
+  - Dropout rate: `0.1` for regularization.
 
-3. **Optimization**  
-   - Optimized using the **Adam optimizer** with learning rate `1e-3`.
+- **LayerNorm and Residual Connections**:
+  - Applied before and after attention and feedforward blocks for training stability.
 
-4. **Evaluation**  
-   - **Average R² score** across all 6 levels is computed for validation.
-
-5. **Epochs**  
-   - The model is trained for `100 epochs` with `batch size = 32`.
-
----
-
-## **Output & Visualization**
-
-After training, the following are saved:
-
-| Output File | Description |
-|-------------|-------------|
-| `integrated_transformer_model.pt` | Trained PyTorch model file |
-| `integrated_transformer_predictions.csv` | CSV of predicted vs. true values for test set |
-| `transformer_r2_scatter_test.png` | Scatter plot of predicted vs. true values (T1–T6) |
-| `transformer_curve_comparison_test.png` | Dose-response curve comparison for 5 random sequences |
-
----
-
-## **Usage Instructions**
-
-### **1. Install Required Packages**
-```bash
-pip install torch pandas numpy matplotlib scikit-learn
+### Code Representation:
+```python
+encoder_layer = nn.TransformerEncoderLayer(
+    d_model=64, nhead=4, dim_feedforward=256, dropout=0.1,
+    activation="gelu", batch_first=True
+)
+self.transformer = nn.TransformerEncoder(encoder_layer, num_layers=2)
