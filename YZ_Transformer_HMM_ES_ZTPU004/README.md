@@ -28,24 +28,24 @@ The input dataset is stored as a CSV file and contains the following columns:
    - This results in a **(N, sequence_length, 4)** feature representation.
 
 2. **HMM State Prediction:**  
-   - A **7-state Gaussian Hidden Markov Model (HMM)** is trained on the fluorescence intensity values.
-   - The **HMM assigns states** to each fluorescence measurement across six time points.
+   - A **7-state Gaussian Hidden Markov Model (HMM)** is trained on the ZTP function values.
+   - The **HMM assigns states** to each function measurement across six time points (ZMP concentration levels).
 
 3. **Train-Test Split:**  
-   - The dataset is divided into **80% training** and **20% testing**, ensuring all fluorescence levels (T1-T6) are split consistently.
+   - The dataset is divided into **80% training** and **20% testing**, ensuring all function levels (T1-T6) are split consistently.
 
 ---
 
 ## **Model Overview**
 The **HMM-Transformer Model** combines:
 1. **HMM Component:**  
-   - Learns a **hidden state representation** from fluorescence values.  
-   - Encodes fluorescence response as discrete **latent states**.
+   - Learns a **hidden state representation** from function values.  
+   - Encodes function values as discrete **latent states**.
 
 2. **Transformer Component:**  
    - **Embeds both mutation sequences & HMM states**.  
    - **Self-attention** mechanism models complex dependencies.  
-   - Outputs **six fluorescence intensity values simultaneously**.
+   - Outputs **six ZTP function values simultaneously**.
 
 ### **Architecture**
 - **Mutation Embedding:**  
@@ -65,7 +65,7 @@ The **HMM-Transformer Model** combines:
   - Outputs a **feature vector** for regression.
 
 - **Fully Connected Layer:**  
-  - Produces **six fluorescence intensity values (T1-T6)**.
+  - Produces **six ZTP function values (T1-T6)**.
 
 The model is trained using **Mean Squared Error (MSE) loss** and optimized using **Adam optimizer**.
 
@@ -75,7 +75,7 @@ The model is trained using **Mean Squared Error (MSE) loss** and optimized using
 The model is trained using the following procedure:
 
 1. **Train Hidden Markov Model (HMM):**  
-   - The HMM is **fitted on fluorescence values**, learning **hidden states**.
+   - The HMM is **fitted on ZTP functiion values**, learning **hidden states**.
 
 2. **Train Transformer Model:**  
    - Inputs: **One-hot encoded mutations + HMM latent states**.  
@@ -86,7 +86,7 @@ The model is trained using the following procedure:
 
 3. **Evaluation on Test Data:**  
    - Compute **MSE & R² Score**.
-   - Compare **true vs. predicted fluorescence intensity**.
+   - Compare **true vs. predicted ZTP function levels**.
 
 ---
 
@@ -100,7 +100,7 @@ The model aims to achieve **high accuracy** in predicting fluorescence dose-resp
   - Histogram of **prediction errors** to analyze model performance.
 
 - **Dose-Response Curve Comparison:**  
-  - Selects **five random test sequences** and plots their **true vs. predicted fluorescence response**.
+  - Selects **five random test sequences** and plots their **true vs. predicted curves**.
 
 - **Fold Change Analysis:**  
   - Computes **fold change (T6 / T1)** for predicted & true values.
@@ -123,10 +123,10 @@ After running the script, the following files will be generated:
 | Output File | Description |
 |------------|-------------|
 | **`hmm_transformer_model.pt`** | Trained HMM-Transformer model for predicting fluorescence values |
-| **`test_predictions.csv`** | Predicted fluorescence intensities for test set |
-| **`predictions_2.png`** | Predicted vs. actual fluorescence curves |
+| **`test_predictions.csv`** | Predicted funtion levels for test set |
+| **`predictions_2.png`** | Predicted vs. actual function curves |
 | **`error_distribution_2.png`** | Histogram of prediction errors |
-| **`correlation_scatter_2.png`** | True vs. predicted fluorescence scatter plot |
+| **`correlation_scatter_2.png`** | True vs. predicted function scatter plot |
 | **`fold_change_r2.png`** | R² Score for fold change (T6 / T1) |
 
 ---
@@ -138,19 +138,13 @@ After running the script, the following files will be generated:
 
 2. **Dose-Response Curve Comparison**  
    - Displays **true vs. predicted curves** for randomly selected test sequences.  
-   - Demonstrates how well the model captures fluorescence dynamics.
+   - Demonstrates how well the model captures function dynamics.
 
 3. **Fold Change Analysis**  
    - Computes and compares **true vs. predicted fold change** values.  
    - High **R² Score** indicates **accurate ratio predictions**.
 
 ---
-
-## **Key Improvements Over Previous Models**
-✅ **HMM-Enhanced Predictions:** Learns **latent states** from fluorescence curves, improving sequence interpretation.  
-✅ **Attention-Based Fusion:** Captures **sequence dependencies & HMM states** jointly.  
-✅ **Multi-Output Learning:** Predicts **all six fluorescence values simultaneously**, making inference efficient.  
-✅ **Fold Change R² Analysis:** Evaluates model ability to **capture relative intensity changes**.  
 
 - **Yuntong Zou**  
 
