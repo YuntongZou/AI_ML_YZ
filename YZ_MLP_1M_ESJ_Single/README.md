@@ -14,8 +14,8 @@ The dataset is stored in a CSV file and contains DNA sequences with mutation ann
 |--------------------|-------------|
 | **id**             | Mutation identifier (e.g., `d25` = delete position 25) |
 | **full_sequence**  | Raw DNA sequence (string of A, T, G, C) |
-| **0mM_fracBound**  | Binding level at 0mM Mg²⁺ |
-| **1mM_fracBound**  | Binding level at 1mM Mg²⁺ |
+| **0mM_fracBound**  | Binding level at 0mM ZMP |
+| **1mM_fracBound**  | Binding level at 1mM ZMP |
 | **fold_change**    | Optional original fold change column |
 
 ### **Preprocessing Steps**
